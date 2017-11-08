@@ -9,7 +9,7 @@ var firebaseApp = firebase.initializeApp({
   messagingSenderId: '1010282883652'
 })
 var db = firebaseApp.database()
-new CronJob('*/1 * * * * *', function() {
+new CronJob('*/5 * * * * *', function() {
   db.ref('/').once('value', function (snapshot) {
     console.log(snapshot.val())
     for(props in snapshot.val()) {
