@@ -4,10 +4,10 @@
     <v-flex xs12 sm6 offset-sm3>
       <v-card>
         <v-toolbar color="indigo" dark>
-          <v-toolbar-title>List Pohon</v-toolbar-title>
+          <v-toolbar-title style="color:white;">List Pohon</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon @click="formNew">
-            <v-icon>add</v-icon>
+            <v-icon color="white">add</v-icon>
           </v-btn>
         </v-toolbar>
         <v-list>
