@@ -9,26 +9,29 @@ var firebaseApp = firebase.initializeApp({
   messagingSenderId: '1010282883652'
 })
 var db = firebaseApp.database()
-new CronJob('*/5 * * * * *', function() {
+new CronJob('*/1 * * * * *', function() {
   db.ref('/').once('value', function (snapshot) {
-    if (snapshot.val().status === 'dead'){
-      
-    } else {
-      db.ref('/age').set(parseInt(snapshot.val().age) + 1)
-      db.ref('/height').set(parseInt(snapshot.val().height) + randomHeightGrow())
-      if (parseInt(snapshot.val().age)+1 > 14) {
-        db.ref('/status').set('dead')
-      }
-      else if (parseInt(snapshot.val().age)+1 > 7) {
-        db.ref('/status').set('mature')
-      }
-      else if (parseInt(snapshot.val().age)+1 > 3) {
-        db.ref('/status').set('teen')
+    console.log(snapshot.val())
+    for(props in snapshot.val()) {
+      if (snapshot.val()[props].status === 'dead'){
+
       } else {
-        db.ref('/status').set('baby')
-      }
-      if (snapshot.val().status === 'mature') {
-        db.ref('/fruits').set(parseInt(snapshot.val().age) + randomFruit())
+        db.ref('/'+props+'/age').set(parseInt(snapshot.val()[props].age) + 1)
+        db.ref('/'+props+'/height').set(parseInt(snapshot.val()[props].height) + randomHeightGrow())
+        if (parseInt(snapshot.val()[props].age)+1 > 14) {
+          db.ref('/'+props+'/status').set('dead')
+        }
+        else if (parseInt(snapshot.val()[props].age)+1 > 7) {
+          db.ref('/'+props+'/status').set('mature')
+        }
+        else if (parseInt(snapshot.val()[props].age)+1 > 3) {
+          db.ref('/'+props+'/status').set('teen')
+        } else {
+          db.ref('/'+props+'/status').set('baby')
+        }
+        if (snapshot.val()[props].status === 'mature') {
+          db.ref('/'+props+'/fruits').set(parseInt(snapshot.val()[props].fruits) + randomFruit())
+        }
       }
     }
   })
