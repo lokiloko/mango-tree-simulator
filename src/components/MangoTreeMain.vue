@@ -1,5 +1,5 @@
 <template lang="html">
-<div>
+<div id="tree">
   <v-layout row>
     <v-flex xs12 sm6 offset-sm3>
       <v-card>
@@ -16,6 +16,7 @@
         </v-card-title>
         <v-card-actions>
           <v-btn flat color="error" dark @click="restartTree">ReStart</v-btn>
+          <v-btn flat color="primary" dark @click="redirectHome">Home</v-btn>
           <v-spacer></v-spacer>
           <v-btn icon @click.native="show = !show">
             <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
@@ -64,6 +65,7 @@
 import db from '@/firebase/firebase'
 
 export default {
+  props: ['id'],
   data: () => ({
     show: true,
     valid: false,
@@ -81,7 +83,7 @@ export default {
   methods: {
     getTreeData () {
       var self = this
-      db.ref('/').on('value', function (snapshot) {
+      db.ref('/' + this.id).on('value', function (snapshot) {
         self.age = snapshot.val().age
         self.name = snapshot.val().name
         self.status = snapshot.val().status
@@ -90,13 +92,17 @@ export default {
       })
     },
     restartTree () {
-      db.ref('/').set({
+      var self = this
+      db.ref('/' + this.id).set({
         age: '0',
-        name: 'Pohon Mangga Q',
+        name: self.name,
         status: 'baby',
         fruits: '0',
         height: '0'
       })
+    },
+    redirectHome () {
+      this.$router.push('/')
     }
   },
   created () {
